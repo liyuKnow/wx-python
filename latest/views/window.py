@@ -105,6 +105,8 @@ from .panels import *
 class Window(wx.Frame):
     def __init__(self, parent, title):
         super(Window, self).__init__(parent, title=title, size=(350, 250))
+
+        self.SetBackgroundColour(wx.Colour(255, 0, 0))
         # SET FINAL WINDOW SIZE
         self.SetMaxSize(wx.Size(830, 590))
         self.SetMinSize(wx.Size(830, 590))
@@ -135,4 +137,20 @@ class Window(wx.Frame):
         self.SetSizer(wrapper)
 
         self.Show()
+        self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
         self.Center()
+
+    def OnCloseWindow(self, e):
+        dial = wx.MessageDialog(
+            None,
+            "Are you sure you want to quit?",
+            "Question",
+            wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION
+        )
+
+        ret = dial.ShowModal()
+
+        if ret == wx.ID_YES:
+            self.Destroy()
+        else:
+            print(e)

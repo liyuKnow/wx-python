@@ -1,10 +1,10 @@
 import wx
-
+from logic import feedbackFont
 
 class BottomPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent, size=(790, 180))
-        self.SetBackgroundColour("pink")
+        self.SetBackgroundColour(wx.Colour(41, 41, 41))
 
         # SET UP FLEX SIZER FOR PANEL
         wrapper = wx.BoxSizer(wx.VERTICAL)
@@ -17,6 +17,7 @@ class BottomPanel(wx.Panel):
             self, label="Test Connection", size=(120, 40))
 
         conn_feedback = wx.StaticText(self, label="No Devices Are Connected")
+        conn_feedback.SetFont(feedbackFont())
 
         # ADD WIDGETS TO SIZER
         sizer.AddMany([conn_btn,

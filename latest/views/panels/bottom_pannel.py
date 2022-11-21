@@ -1,31 +1,32 @@
 import wx
-from logic import feedbackFont
+from controllers import feedbackFont
+
 
 class BottomPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent, size=(790, 180))
-        self.SetBackgroundColour(wx.Colour(41, 41, 41))
+        self.SetBackgroundColour(wx.Colour("#bfbfbf"))
 
         # SET UP FLEX SIZER FOR PANEL
-        wrapper = wx.BoxSizer(wx.VERTICAL)
+        outer_wrapper = wx.BoxSizer(wx.VERTICAL)
 
-        # MAKE LAYOUT (1x1)
-        sizer = wx.FlexGridSizer(rows=1, cols=2, vgap=10, hgap=10)
+        # # MAKE LAYOUT (1x2)
+        sizer = wx.FlexGridSizer(rows=1, cols=2, vgap=5, hgap=5)
 
-        # DEFINE WIDGETS
-        conn_btn = wx.Button(
-            self, label="Test Connection", size=(120, 40))
+        left_panel = wx.Panel(self, size=(440, 160))
+        left_panel.SetBackgroundColour(("#949488"))
 
-        conn_feedback = wx.StaticText(self, label="No Devices Are Connected")
-        conn_feedback.SetFont(feedbackFont())
+        right_panel = wx.Panel(self, size=(320, 160))
+        right_panel.SetBackgroundColour(("#949488"))
 
-        # ADD WIDGETS TO SIZER
-        sizer.AddMany([conn_btn,
-                       (conn_feedback, 0, wx.EXPAND), ])
+        sizer.AddMany(
+            [left_panel, right_panel]
+        )
 
-        # RESIZE AND ALSO AT MAXIMAZING SCREEN (FLEX GROW)
-        sizer.AddGrowableCol(1, 1)
+        # ADD LEFT PANEL WIDGETS
 
-        # SET SIZER TO PANEL WITH A BOX SIZE WRAPPER
-        wrapper.Add(sizer, proportion=1, flag=wx.ALL | wx.EXPAND, border=10)
-        self.SetSizer(wrapper)
+        # ADD RIGHT PANEL WIDGETS
+
+        outer_wrapper.Add(sizer, proportion=1, flag=wx.ALL |
+                          wx.EXPAND, border=10)
+        self.SetSizer(outer_wrapper)

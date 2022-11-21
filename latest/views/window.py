@@ -106,7 +106,7 @@ class Window(wx.Frame):
     def __init__(self, parent, title):
         super(Window, self).__init__(parent, title=title, size=(350, 250))
 
-        self.SetBackgroundColour(wx.Colour(26, 26, 26))
+        self.SetBackgroundColour(wx.Colour("#e2e2e2"))
         # SET FINAL WINDOW SIZE
         self.SetMaxSize(wx.Size(830, 590))
         self.SetMinSize(wx.Size(830, 590))

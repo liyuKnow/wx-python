@@ -1,12 +1,12 @@
 import wx
-from logic import feedbackFont
+from controllers import feedbackFont
 import subprocess
 
 
 class TopPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent, size=(790, 100))
-        self.SetBackgroundColour(wx.Colour(41, 41, 41))
+        self.SetBackgroundColour(wx.Colour("#bfbfbf"))
 
         # SET UP FLEX SIZER FOR PANEL
         wrapper = wx.BoxSizer(wx.VERTICAL)
@@ -52,7 +52,7 @@ class TopPanel(wx.Panel):
                 # DEVICE FOUND
                 device_name = device_list[1]
 
-                print(device_name)
+                # print(device_name)
 
                 self.conn_feedback.SetLabel("One Device Found")
                 self.conn_feedback.SetForegroundColour((108, 174, 80))

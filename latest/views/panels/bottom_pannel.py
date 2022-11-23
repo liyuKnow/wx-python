@@ -1,4 +1,7 @@
 import wx
+import os
+import subprocess
+
 from controllers import feedbackFont
 
 
@@ -30,3 +33,10 @@ class BottomPanel(wx.Panel):
         outer_wrapper.Add(sizer, proportion=1, flag=wx.ALL |
                           wx.EXPAND, border=10)
         self.SetSizer(outer_wrapper)
+
+    def pull_button_event(self, event):
+        file_path = os.path.expanduser('~')
+        pull_command = f"adb pull /storage/emulated/0/Download/NewCounter.txt {file_path}\Desktop"
+        with subprocess.Popen(pull_command, stdout=subprocess.PIPE, stderr=None, shell=True) as process:
+            output = process.communicate()[0].decode("utf-8")
+            print(output)

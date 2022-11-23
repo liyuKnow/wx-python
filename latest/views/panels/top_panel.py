@@ -20,7 +20,7 @@ class TopPanel(wx.Panel):
         self.conn_btn.Bind(wx.EVT_BUTTON, self.testConnection)
 
         self.conn_feedback = wx.StaticText(
-            self,  wx.ALIGN_BOTTOM, label="",)
+            self,  wx.ALIGN_CENTER_VERTICAL, label="",)
         self.conn_feedback.SetFont(feedbackFont())
 
         # ADD WIDGETS TO SIZER

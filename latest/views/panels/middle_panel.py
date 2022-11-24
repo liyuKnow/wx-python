@@ -1,11 +1,13 @@
 import wx
+import wx.lib.scrolledpanel as scrolled
 import os
 import subprocess
-# importing pandas as pd
 import pandas as pd
+import pubsub
+
 
 # LOCAL PACKAGE
-from controllers import feedbackFont
+from controllers import feedbackFont, FileDrop
 
 
 class MiddlePanel(wx.Panel):
@@ -23,11 +25,13 @@ class MiddlePanel(wx.Panel):
 
         # DEFINE WIDGETS
         self.left_panel = LeftPanel(self)
-        right_panel = RightPanel(self)
+        self.right_panel = RightPanel(self)
 
         sizer.AddMany(
-            [self.left_panel, right_panel]
+            [self.left_panel, self.right_panel]
         )
+
+        # pubsub.subscribe()
 
         # # SET SIZER TO PANEL WITH A BOX SIZE WRAPPER
         outer_wrapper.Add(sizer, proportion=1, flag=wx.ALL |
@@ -72,7 +76,6 @@ class LeftPanel(wx.Panel):
         self.InitUI()
 
     def InitUI(self):
-        self.SetBackgroundColour(("#949488"))
 
         # DEFINE LEFT PANEL WRAPPER
         wrapper = wx.BoxSizer(wx.VERTICAL)
@@ -111,11 +114,13 @@ class LeftPanel(wx.Panel):
 
         # DEFINE BOTTOM FEED BACK AREA GROWABLE
         self.send_feedback = wx.StaticText(
-            self.bottom,  wx.ALIGN_BOTTOM, label="TESTING SHIT TESTING SHIT TESTING SHIT TESTING SHIT TESTING SHIT TESTING SHIT TESTING SHIT TESTING SHIT TESTING SHIT",)
+            self.bottom,  wx.ALIGN_BOTTOM, label="",)
         self.send_feedback.SetFont(feedbackFont())
 
+        sizer.AddGrowableRow(1, 4)
+
         sizer.AddMany(
-            [self.top, self.middle, self.bottom]
+            [self.top, self.middle, (self.bottom, 0, wx.EXPAND)]
         )
 
         wrapper.Add(sizer, proportion=1, flag=wx.ALL |
@@ -181,6 +186,9 @@ class LeftPanel(wx.Panel):
                     csv_output = subprocess.call(
                         push_csv_command, stdout=subprocess.PIPE, stderr=None, shell=True)
                     #
+                    self.send_feedback.SetLabel(
+                        "File was Sent successfully")
+                    self.send_feedback.SetForegroundColour((108, 174, 80))
 
                 else:
                     self.send_feedback.SetLabel(
@@ -198,23 +206,29 @@ class RightPanel(wx.Panel):
         wx.Panel.__init__(self, parent=parent, size=(380, 210))
 
         self.SetBackgroundColour(("#949488"))
+        self.InitUI()
 
+    def InitUI(self):
         # DEFINE LEFT PANEL WRAPPER
         wrapper = wx.BoxSizer(wx.VERTICAL)
 
+        self.text = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        dt = FileDrop(self)
+
+        print(dt)
+        self.text.SetDropTarget(dt)
+
+        # self.SetTitle('File drag and drop')
+        self.Centre()
+
         # DEFINE LEFT PANEL LAYOUT
-        sizer = wx.FlexGridSizer(rows=3, cols=2, vgap=5, hgap=5)
+        sizer = wx.FlexGridSizer(rows=1, cols=1, vgap=5, hgap=5)
 
         # # DEFINE AND ADD LEFT PANEL WIDGETS
-        browse_file_btn = wx.Button(
-            self, label="Browse File", size=(120, 40), style=wx.NO_BORDER)
+        self.Info_text = wx.StaticText(
+            self, -1, style=wx.ALIGN_CENTRE, label="Drag and drop files here to send")
 
-        send_file_btn = wx.Button(
-            self, label="Send File", size=(120, 40), style=wx.NO_BORDER)
-
-        sizer.AddMany(
-            [browse_file_btn, send_file_btn]
-        )
+        sizer.Add(self.Info_text,)
 
         wrapper.Add(sizer, proportion=1, flag=wx.ALL |
                     wx.EXPAND, border=10)
